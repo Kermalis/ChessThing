@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 
 namespace Kermalis.ChessThing;
 
@@ -22,7 +21,7 @@ public sealed class Board
 	{
 		if (pieces.Length != 8 * 8)
 		{
-			throw new InvalidDataException("Board must have 8 rows and 8 columns.");
+			throw new ArgumentException("Must have 8 rows and 8 columns.", nameof(pieces));
 		}
 
 		pieces.CopyTo(_squares);

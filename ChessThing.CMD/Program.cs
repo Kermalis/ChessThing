@@ -7,6 +7,19 @@ internal static class Program
 {
 	private static void Main()
 	{
+		int which = 1;
+
+		switch (which)
+		{
+			case 0: Test1(); break;
+			case 1: Test2(); break;
+		}
+
+		Console.ReadKey();
+	}
+
+	private static void Test1()
+	{
 		var board = new Board();
 
 		board[new Square(Row.R2, Col.CG)] = TeamedPiece.W_Queen;
@@ -14,111 +27,35 @@ internal static class Program
 
 		var sb = new StringBuilder();
 
-		AppendBoardASCII(sb, board, true);
+		CUtils.AppendBoardASCII(sb, board, true);
 
 		sb.AppendLine();
 		sb.AppendLine();
 		sb.AppendLine();
 
-		AppendBoardASCII(sb, board, false);
+		CUtils.AppendBoardASCII(sb, board, false);
 
 		Console.WriteLine(sb.ToString());
-
-		Console.ReadKey();
 	}
-
-	private static void AppendBoardASCII(StringBuilder sb, Board board, bool blackOnTop)
+	private static void Test2()
 	{
-		void RowLine()
-		{
-			for (int d = 0; d < 18; d++)
-			{
-				sb.Append('—');
-			}
-			sb.AppendLine();
-		}
+		var board = new Board();
 
-		if (blackOnTop)
-		{
-			for (int y = 7; y >= 0; y--)
-			{
-				var row = (Row)y;
+		// Valid:
+		//string testPlacement = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
+		//string testPlacement = "bnnrkbrq/pppppppp/8/8/8/8/PPPPPPPP/BNNRKBRQ";
+		string testPlacement = "6k1/pb1r3p/1p4p1/2p3q1/2Pp4/1P1Nnr2/P2R1QPP/4RBK1";
 
-				// Print Row legend
-				sb.Append(row.RowChar());
-				sb.Append('|');
+		Span<TeamedPiece> pieces = stackalloc TeamedPiece[8 * 8];
 
-				for (int x = 0; x < 8; x++)
-				{
-					var col = (Col)x;
+		FEN.ParsePlacement(pieces, testPlacement);
 
-					TeamedPiece tp = board[new Square(row, col)];
-					if (tp == TeamedPiece.None)
-					{
-						sb.Append(' ');
-					}
-					else
-					{
-						sb.Append(tp.PieceChar());
-					}
+		board.SetPieces(pieces);
 
-					sb.Append('|');
-				}
+		var sb = new StringBuilder();
 
-				sb.AppendLine();
-				RowLine();
-			}
+		CUtils.AppendBoardASCII(sb, board, true);
 
-			// Print Column legend
-			sb.Append(" |");
-			for (int x = 0; x < 8; x++)
-			{
-				var col = (Col)x;
-
-				sb.Append(col.ColumnChar());
-				sb.Append('|');
-			}
-		}
-		else
-		{
-			for (int y = 0; y < 8; y++)
-			{
-				var row = (Row)y;
-
-				// Print Row legend
-				sb.Append(row.RowChar());
-				sb.Append('|');
-
-				for (int x = 7; x >= 0; x--)
-				{
-					var col = (Col)x;
-
-					TeamedPiece tp = board[new Square(row, col)];
-					if (tp == TeamedPiece.None)
-					{
-						sb.Append(' ');
-					}
-					else
-					{
-						sb.Append(tp.PieceChar());
-					}
-
-					sb.Append('|');
-				}
-
-				sb.AppendLine();
-				RowLine();
-			}
-
-			// Print Column legend
-			sb.Append(" |");
-			for (int x = 7; x >= 0; x--)
-			{
-				var col = (Col)x;
-
-				sb.Append(col.ColumnChar());
-				sb.Append('|');
-			}
-		}
+		Console.WriteLine(sb.ToString());
 	}
 }

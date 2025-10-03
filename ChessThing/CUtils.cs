@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace Kermalis.ChessThing;
 
@@ -43,6 +44,28 @@ public static class CUtils
 		return PieceChar(p, white);
 	}
 
+	/// <summary>Does not handle <see cref="TeamedPiece.None"/>. If the parse failed, this returns <see cref="TeamedPiece.MAX"/>.</summary>
+	public static TeamedPiece TryParseTeamedPiece(char c)
+	{
+		switch (c)
+		{
+			case 'P': return TeamedPiece.W_Pawn;
+			case 'p': return TeamedPiece.B_Pawn;
+			case 'N': return TeamedPiece.W_Knight;
+			case 'n': return TeamedPiece.B_Knight;
+			case 'B': return TeamedPiece.W_Bishop;
+			case 'b': return TeamedPiece.B_Bishop;
+			case 'R': return TeamedPiece.W_Rook;
+			case 'r': return TeamedPiece.B_Rook;
+			case 'Q': return TeamedPiece.W_Queen;
+			case 'q': return TeamedPiece.B_Queen;
+			case 'K': return TeamedPiece.W_King;
+			case 'k': return TeamedPiece.B_King;
+		}
+
+		return TeamedPiece.MAX;
+	}
+
 	public static char RowChar(this Row row)
 	{
 		return (char)((int)row + '1');
@@ -55,5 +78,100 @@ public static class CUtils
 	public static int SquareIndex(Row row, Col col)
 	{
 		return ((int)row * 8) + (int)col;
+	}
+
+	public static void AppendBoardASCII(StringBuilder sb, Board board, bool blackOnTop)
+	{
+		void RowLine()
+		{
+			for (int d = 0; d < 18; d++)
+			{
+				sb.Append('—');
+			}
+			sb.AppendLine();
+		}
+
+		if (blackOnTop)
+		{
+			for (int y = 7; y >= 0; y--)
+			{
+				var row = (Row)y;
+
+				// Print Row legend
+				sb.Append(row.RowChar());
+				sb.Append('|');
+
+				for (int x = 0; x < 8; x++)
+				{
+					var col = (Col)x;
+
+					TeamedPiece tp = board[new Square(row, col)];
+					if (tp == TeamedPiece.None)
+					{
+						sb.Append(' ');
+					}
+					else
+					{
+						sb.Append(tp.PieceChar());
+					}
+
+					sb.Append('|');
+				}
+
+				sb.AppendLine();
+				RowLine();
+			}
+
+			// Print Column legend
+			sb.Append(" |");
+			for (int x = 0; x < 8; x++)
+			{
+				var col = (Col)x;
+
+				sb.Append(col.ColumnChar());
+				sb.Append('|');
+			}
+		}
+		else
+		{
+			for (int y = 0; y < 8; y++)
+			{
+				var row = (Row)y;
+
+				// Print Row legend
+				sb.Append(row.RowChar());
+				sb.Append('|');
+
+				for (int x = 7; x >= 0; x--)
+				{
+					var col = (Col)x;
+
+					TeamedPiece tp = board[new Square(row, col)];
+					if (tp == TeamedPiece.None)
+					{
+						sb.Append(' ');
+					}
+					else
+					{
+						sb.Append(tp.PieceChar());
+					}
+
+					sb.Append('|');
+				}
+
+				sb.AppendLine();
+				RowLine();
+			}
+
+			// Print Column legend
+			sb.Append(" |");
+			for (int x = 7; x >= 0; x--)
+			{
+				var col = (Col)x;
+
+				sb.Append(col.ColumnChar());
+				sb.Append('|');
+			}
+		}
 	}
 }
