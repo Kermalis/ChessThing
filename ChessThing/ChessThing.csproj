@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		<OutputType>Library</OutputType>
+		<RootNamespace>Kermalis.ChessThing</RootNamespace>
+		<Nullable>enable</Nullable>
+		<NoWarn>IDE0290</NoWarn>
+
+		<Authors>Kermalis</Authors>
+		<Copyright>Kermalis</Copyright>
+		<Product>ChessThing</Product>
+		<Title>ChessThing</Title>
+		<RepositoryUrl>https://github.com/Kermalis/ChessThing</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+		<DebugType>none</DebugType>
+		<DebugSymbols>false</DebugSymbols>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<Optimize>false</Optimize>
+		<DefineConstants>DEBUG;TRACE</DefineConstants>
+		<DebugType>full</DebugType>
+		<DebugSymbols>true</DebugSymbols>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\LICENSE.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+		<None Include="..\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+</Project>
