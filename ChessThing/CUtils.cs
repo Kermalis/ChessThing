@@ -66,6 +66,32 @@ public static class CUtils
 		return TeamedPiece.MAX;
 	}
 
+	public static Square ParseSquare(char c0, char c1)
+	{
+		Row row;
+		Col col;
+
+		if (c0 is >= 'a' and <= 'h')
+		{
+			col = (Col)(c0 - 'a');
+		}
+		else
+		{
+			throw new ArgumentOutOfRangeException(nameof(c0), c0, "Invalid column");
+		}
+
+		if (c1 is >= '1' and <= '8')
+		{
+			row = (Row)(c1 - '1');
+		}
+		else
+		{
+			throw new ArgumentOutOfRangeException(nameof(c1), c1, "Invalid row");
+		}
+
+		return new Square(row, col);
+	}
+
 	public static char RowChar(this Row row)
 	{
 		return (char)((int)row + '1');
@@ -173,5 +199,25 @@ public static class CUtils
 				sb.Append('|');
 			}
 		}
+
+		sb.AppendLine();
+		sb.AppendLine();
+
+		sb.AppendLine(board.WhiteToMove ? "White to move..." : "Black to move...");
+		sb.AppendLine();
+		sb.AppendLine($"White castling: {board.WhiteCastling}");
+		sb.AppendLine($"Black castling: {board.BlackCastling}");
+		if (board.EnPassantTarget is null)
+		{
+			sb.AppendLine("En passant possibility: None");
+		}
+		else
+		{
+			Square s = board.EnPassantTarget.Value;
+
+			sb.AppendLine($"En passant possibility: {s.Col.ColumnChar()}{s.Row.RowChar()}");
+		}
+		sb.AppendLine($"HalfMoves: {board.NumHalfMoves}");
+		sb.AppendLine($"FullMoves: {board.NumFullMoves}");
 	}
 }

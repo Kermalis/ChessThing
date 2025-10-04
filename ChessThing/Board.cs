@@ -6,6 +6,13 @@ public sealed class Board
 {
 	private readonly TeamedPiece[] _squares;
 
+	public bool WhiteToMove;
+	public CastlingAbility WhiteCastling;
+	public CastlingAbility BlackCastling;
+	public Square? EnPassantTarget;
+	public byte NumHalfMoves;
+	public uint NumFullMoves;
+
 	public TeamedPiece this[Square pos]
 	{
 		get => _squares[pos.Index];

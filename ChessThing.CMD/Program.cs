@@ -7,18 +7,19 @@ internal static class Program
 {
 	private static void Main()
 	{
-		int which = 1;
+		int which = 2;
 
 		switch (which)
 		{
-			case 0: Test1(); break;
-			case 1: Test2(); break;
+			case 0: Test0(); break;
+			case 1: Test1(); break;
+			case 2: Test2(); break;
 		}
 
 		Console.ReadKey();
 	}
 
-	private static void Test1()
+	private static void Test0()
 	{
 		var board = new Board();
 
@@ -37,7 +38,7 @@ internal static class Program
 
 		Console.WriteLine(sb.ToString());
 	}
-	private static void Test2()
+	private static void Test1()
 	{
 		var board = new Board();
 
@@ -48,7 +49,7 @@ internal static class Program
 
 		Span<TeamedPiece> pieces = stackalloc TeamedPiece[8 * 8];
 
-		FEN.ParsePlacement(pieces, testPlacement);
+		FEN.ParsePlacementOnly(pieces, testPlacement);
 
 		board.SetPieces(pieces);
 
@@ -57,5 +58,27 @@ internal static class Program
 		CUtils.AppendBoardASCII(sb, board, true);
 
 		Console.WriteLine(sb.ToString());
+	}
+	private static void Test2()
+	{
+		var board = new Board();
+
+		// Valid:
+		//string testFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w QKqk - 0 1";
+		//string testFEN = "6k1/pb1r3p/1p4p1/2p3q1/2Pp4/1P1Nnr2/P2R1QPP/4RBK1 w - - 0 34";
+		//string testFEN = "8/4r2k/2p4P/1pPp1pP1/pP1PrP2/P2Kp3/4B3/5R2 w - - 59 170";
+		//string testFEN = "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1";
+		string testFEN = "r1bq1rk1/pppn1ppQ/4p1B1/3pP3/8/2P1P1P1/PP1N1PP1/R3K3 b Q - 3 17";
+
+		FEN.Parse(board, testFEN);
+
+		var sb = new StringBuilder();
+
+		CUtils.AppendBoardASCII(sb, board, true);
+
+		Console.WriteLine(sb.ToString());
+
+		string doneFEN = FEN.ToFEN(board);
+		Console.WriteLine($"\"{doneFEN}\"");
 	}
 }

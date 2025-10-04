@@ -1,4 +1,14 @@
-﻿namespace Kermalis.ChessThing;
+﻿using System;
+
+namespace Kermalis.ChessThing;
+
+[Flags]
+public enum CastlingAbility : byte
+{
+	None = 0,
+	QueenSide = 1 << 0,
+	KingSide = 1 << 1,
+}
 
 public enum Col : byte
 {

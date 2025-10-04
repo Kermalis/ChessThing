@@ -19,11 +19,14 @@ partial class ChessTests
 		[InlineData("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR", true)]
 		[InlineData("bnnrkbrq/pppppppp/8/8/8/8/PPPPPPPP/BNNRKBRQ", true)]
 		[InlineData("6k1/pb1r3p/1p4p1/2p3q1/2Pp4/1P1Nnr2/P2R1QPP/4RBK1", true)]
-		[InlineData("rnbqkbnr/pppppppp/44/8/8/8/PPPPPPPP/RNBQKBNR", false)]
-		[InlineData("rnbqkbnr/ppppppp2/8/8/8/8/PPPPPPPP/RNBQKBNR", false)]
-		[InlineData("Anbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR", false)]
-		[InlineData("rnbqkbnrpppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR", false)]
-		[InlineData("rnbqkbnr&pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR", false)]
+		[InlineData("rnbqkbnr/pppppppp/44/8/8/8/PPPPPPPP/RNBQKBNR", false)] // Multiple empty specifiers
+		[InlineData("rnbqkbnr/ppppppp2/8/8/8/8/PPPPPPPP/RNBQKBNR", false)] // Too many empty squares
+		[InlineData("Anbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR", false)] // Invalid piece ('A')
+		[InlineData("rnbqkbnr/pppppppp/7/8/8/8/PPPPPPPP/RNBQKBNR", false)] // Invalid piece ('/')
+		[InlineData("rnbqkbnrpppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR", false)] // Invalid row terminator ('p')
+		[InlineData("rnbqkbnr&pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR", false)] // Invalid row terminator ('&')
+		[InlineData("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKB1", false)] // Too few chars
+		[InlineData("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBN", false)] // Too few chars
 		public void Test(string testPlacement, bool valid)
 		{
 			var board = new Board();
@@ -33,10 +36,12 @@ partial class ChessTests
 			bool threw = false;
 			try
 			{
-				FEN.ParsePlacement(pieces, testPlacement);
+				FEN.ParsePlacementOnly(pieces, testPlacement);
 			}
-			catch
+			catch (Exception ex)
 			{
+				_output.WriteLine(ex.ToString());
+
 				threw = true;
 			}
 			Assert.Equal(valid, threw);
