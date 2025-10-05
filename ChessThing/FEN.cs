@@ -316,6 +316,12 @@ public static class FEN
 
 	private static (CastlingAbility, CastlingAbility) ParseCastling(ref ReadOnlySpan<char> chars)
 	{
+		// Note: In Chess960, the FEN is not "KQkq".
+		// Instead, it includes the column letters.
+		// For example, with rooks on A and H, it is "HAha".
+		// For example, with rooks on C and G, it is "GCgc".
+		// However, I'm not handling that here for now.
+
 		CastlingAbility white;
 		CastlingAbility black;
 
