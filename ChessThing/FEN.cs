@@ -84,7 +84,7 @@ public static class FEN
 
 			while (true)
 			{
-				TeamedPiece tp = board[new Square(row,col)];
+				TeamedPiece tp = board[new Square(col, row)];
 				if (tp == TeamedPiece.None)
 				{
 					numEmpty++;
@@ -330,7 +330,7 @@ public static class FEN
 
 					for (int e = 0; e < numEmpty; e++)
 					{
-						pieces[CUtils.SquareIndex(row, col)] = TeamedPiece.None;
+						pieces[CUtils.SquareIndex(col, row)] = TeamedPiece.None;
 						col++;
 					}
 
@@ -347,7 +347,7 @@ public static class FEN
 					}
 					else
 					{
-						pieces[CUtils.SquareIndex(row, col)] = tp;
+						pieces[CUtils.SquareIndex(col, row)] = tp;
 						col++;
 					}
 				}
@@ -408,7 +408,7 @@ public static class FEN
 
 		for (Col x = Col.CA; x < Col.MAX; x++)
 		{
-			TeamedPiece tp = pieces[CUtils.SquareIndex(y, x)];
+			TeamedPiece tp = pieces[CUtils.SquareIndex(x, y)];
 			if (tp == r)
 			{
 				// Found a rook, make sure we don't have more than 2
@@ -596,7 +596,7 @@ public static class FEN
 			return null;
 		}
 
-		Square s = CUtils.ParseSquare(chars[0], chars[1]);
+		var s = Square.Parse(chars[0], chars[1]);
 		chars = chars.Slice(2);
 		return s;
 	}

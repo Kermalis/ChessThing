@@ -25,8 +25,8 @@ internal static class Program
 	{
 		var board = new Board();
 
-		board[new Square(Row.R2, Col.CG)] = TeamedPiece.W_Queen;
-		board[new Square(Row.R2, Col.CH)] = TeamedPiece.B_Queen;
+		board[new Square(Col.CG, Row.R2)] = TeamedPiece.W_Queen;
+		board[new Square(Col.CH, Row.R2)] = TeamedPiece.B_Queen;
 
 		var sb = new StringBuilder();
 

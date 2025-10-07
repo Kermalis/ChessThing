@@ -66,30 +66,37 @@ public static class CUtils
 		return TeamedPiece.MAX;
 	}
 
-	public static Square ParseSquare(char c0, char c1)
+	/// <summary>If the parse failed, this returns <see cref="PieceKind.MAX"/>.</summary>
+	public static PieceKind TryParsePromotionPiece(char c)
 	{
-		Row row;
-		Col col;
-
-		if (c0 is >= 'a' and <= 'h')
+		switch (c)
 		{
-			col = (Col)(c0 - 'a');
-		}
-		else
-		{
-			throw new ArgumentOutOfRangeException(nameof(c0), c0, "Invalid column");
+			case 'N': return PieceKind.Knight;
+			case 'B': return PieceKind.Bishop;
+			case 'R': return PieceKind.Rook;
+			case 'Q': return PieceKind.Queen;
 		}
 
-		if (c1 is >= '1' and <= '8')
-		{
-			row = (Row)(c1 - '1');
-		}
-		else
-		{
-			throw new ArgumentOutOfRangeException(nameof(c1), c1, "Invalid row");
-		}
+		return PieceKind.MAX;
+	}
 
-		return new Square(row, col);
+	/// <summary>If the parse failed, this returns <see cref="Col.MAX"/>.</summary>
+	public static Col TryParseCol(char c)
+	{
+		if (c is >= 'a' and <= 'h')
+		{
+			return (Col)(c - 'a');
+		}
+		return Col.MAX;
+	}
+	/// <summary>If the parse failed, this returns <see cref="Row.MAX"/>.</summary>
+	public static Row TryParseRow(char c)
+	{
+		if (c is >= '1' and <= '8')
+		{
+			return (Row)(c - '1');
+		}
+		return Row.MAX;
 	}
 
 	public static char RowChar(this Row row)
@@ -105,7 +112,7 @@ public static class CUtils
 		return (char)((int)col + 'a');
 	}
 
-	public static int SquareIndex(Row row, Col col)
+	public static int SquareIndex(Col col, Row row)
 	{
 		return ((int)row * 8) + (int)col;
 	}
@@ -135,7 +142,7 @@ public static class CUtils
 				{
 					var col = (Col)x;
 
-					TeamedPiece tp = board[new Square(row, col)];
+					TeamedPiece tp = board[new Square(col, row)];
 					if (tp == TeamedPiece.None)
 					{
 						sb.Append(' ');
@@ -176,7 +183,7 @@ public static class CUtils
 				{
 					var col = (Col)x;
 
-					TeamedPiece tp = board[new Square(row, col)];
+					TeamedPiece tp = board[new Square(col, row)];
 					if (tp == TeamedPiece.None)
 					{
 						sb.Append(' ');
