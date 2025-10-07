@@ -4,42 +4,134 @@ namespace Kermalis.ChessThing;
 
 public readonly struct Move
 {
-	// TODO: Pack all of this into a u32
-	public readonly PieceKind Piece;
+	// 26 bits of data:
+	// 3 bits [ 0,  2] : Piece [0, 6]
+	// 1 bit  [ 3,  3] : FromColHintExists
+	// 3 bits [ 4,  6] : FromColHint [0, 7]
+	// 1 bit  [ 7,  7] : FromRowHintExists
+	// 3 bits [ 8, 10] : FromRowHint [0, 7]
+	// 1 bit  [11, 11] : ToHintExists
+	// 3 bits [12, 14] : ToHintCol [0, 7]
+	// 3 bits [15, 17] : ToHintRow [0, 7]
+	// 3 bits [18, 20] : PromotedPiece [0, 4]
+	// 1 bit  [21, 21] : CaptureHint
+	// 1 bit  [22, 22] : CastleQueensideHint
+	// 1 bit  [23, 23] : CastleKingsideHint
+	// 1 bit  [24, 24] : CheckHint
+	// 1 bit  [25, 25] : CheckmateHint
+	private readonly uint _data;
 
-	public readonly Col? FromColHint;
-	public readonly Row? FromRowHint;
+	public readonly bool IsInitialized => _data != 0;
 
+	public readonly PieceKind Piece => (PieceKind)(_data & 0b111);
+
+	public readonly Col? FromColHint
+	{
+		get
+		{
+			if ((_data & (1u << 3)) != 0)
+			{
+				return (Col)((_data >> 4) & 0b111);
+			}
+			return null;
+		}
+	}
+	public readonly Row? FromRowHint
+	{
+		get
+		{
+			if ((_data & (1u << 7)) != 0)
+			{
+				return (Row)((_data >> 8) & 0b111);
+			}
+			return null;
+		}
+	}
 	/// <summary>Castling notation infers the "to" square.</summary>
-	public readonly Square? ToHint;
+	public readonly Square? ToHint
+	{
+		get
+		{
+			if ((_data & (1u << 11)) != 0)
+			{
+				var col = (Col)((_data >> 12) & 0b111);
+				var row = (Row)((_data >> 15) & 0b111);
+				return new Square(col, row);
+			}
+			return null;
+		}
+	}
 
-	public readonly PieceKind PromotedPiece;
-	public readonly bool CaptureHint;
-	public readonly bool CastleQueensideHint;
-	public readonly bool CastleKingsideHint;
+	public readonly PieceKind PromotedPiece
+	{
+		get
+		{
+			uint val = (_data >> 18) & 0b111;
+			if (val != 0)
+			{
+				return (PieceKind)(val + 1);
+			}
+			return PieceKind.None;
+		}
+	}
+	public readonly bool CaptureHint => (_data & (1u << 21)) != 0;
+	public readonly bool CastleQueensideHint => (_data & (1u << 22)) != 0;
+	public readonly bool CastleKingsideHint => (_data & (1u << 23)) != 0;
 	/// <summary>This is <see langword="true"/> if <see cref="CheckmateHint"/> is <see langword="true"/>.</summary>
-	public readonly bool CheckHint;
-	public readonly bool CheckmateHint;
+	public readonly bool CheckHint => (_data & (1u << 24)) != 0;
+	public readonly bool CheckmateHint => (_data & (1u << 25)) != 0;
 
-	public readonly bool IsInitialized => Piece != PieceKind.None; // _data != 0
-
-	private Move(PieceKind p, Col? fromColHint, Row? fromRowHint, Square? to,
+	private Move(PieceKind p, Col? fromColHint, Row? fromRowHint, Square? toHint,
 		bool captureHint, bool checkHint, bool checkmateHint, PieceKind promote = PieceKind.None, bool castleQueenside = false, bool castleKingside = false)
 	{
-		Piece = p;
-		FromColHint = fromColHint;
-		FromRowHint = fromRowHint;
-		ToHint = to;
-		PromotedPiece = promote;
-		CaptureHint = captureHint;
-		CastleQueensideHint = castleQueenside;
-		CastleKingsideHint = castleKingside;
-		CheckHint = checkHint;
-		CheckmateHint = checkmateHint;
+		_data |= (uint)p;
+
+		if (fromColHint is not null)
+		{
+			_data |= 1u << 3;
+			_data |= (uint)fromColHint.Value << 4;
+		}
+		if (fromRowHint is not null)
+		{
+			_data |= 1u << 7;
+			_data |= (uint)fromRowHint.Value << 8;
+		}
+		if (toHint is not null)
+		{
+			Square to = toHint.Value;
+			_data |= 1u << 11;
+			_data |= (uint)to.Col << 12;
+			_data |= (uint)to.Row << 15;
+		}
+
+		if (promote != PieceKind.None)
+		{
+			_data |= (uint)(promote - 1) << 18;
+		}
+		if (captureHint)
+		{
+			_data |= 1u << 21;
+		}
+		if (castleQueenside)
+		{
+			_data |= 1u << 22;
+		}
+		if (castleKingside)
+		{
+			_data |= 1u << 23;
+		}
+		if (checkHint)
+		{
+			_data |= 1u << 24;
+		}
+		if (checkmateHint)
+		{
+			_data |= 1u << 25;
+		}
 	}
 
 	/// <summary>This does not validate the legality of the move.
-	/// So "a3=Q", "Kd1#", "Bfg2" or "hxc6" will be parsed even though they're impossible in regular chess.</summary>
+	/// So "a3=Q", "Kd1#", or "hxc6" will be parsed even though they're impossible in regular chess.</summary>
 	public static Move ParseAlgebraicNotation(ref ReadOnlySpan<char> chars)
 	{
 		bool checkHint;
