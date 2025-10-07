@@ -7,13 +7,15 @@ internal static class Program
 {
 	private static void Main()
 	{
-		int which = 2;
+		int which = 4;
 
 		switch (which)
 		{
 			case 0: Test0(); break;
 			case 1: Test1(); break;
 			case 2: Test2(); break;
+			case 3: Test3(); break;
+			case 4: Test4(); break;
 		}
 
 		Console.ReadKey();
@@ -61,6 +63,7 @@ internal static class Program
 	}
 	private static void Test2()
 	{
+		RegularChess gmInfo = RegularChess.Instance;
 		var board = new Board();
 
 		// Valid:
@@ -70,7 +73,7 @@ internal static class Program
 		//string testFEN = "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1";
 		string testFEN = "r1bq1rk1/pppn1ppQ/4p1B1/3pP3/8/2P1P1P1/PP1N1PP1/R3K3 b Q - 3 17";
 
-		FEN.Parse(board, testFEN);
+		FEN.Parse(gmInfo, board, testFEN);
 
 		var sb = new StringBuilder();
 
@@ -78,7 +81,51 @@ internal static class Program
 
 		Console.WriteLine(sb.ToString());
 
-		string doneFEN = FEN.ToFEN(board);
+		string doneFEN = FEN.ToFEN(gmInfo, board);
+		Console.WriteLine($"\"{doneFEN}\"");
+	}
+	private static void Test3()
+	{
+		var gmInfo = Chess960.CreateUninitialized();
+		var board = new Board();
+
+		// Valid:
+		string testFEN = "bnnrkbrq/pppppppp/8/8/8/8/PPPPPPPP/BNNRKBRQ w GDgd - 0 1";
+
+		FEN.Parse(gmInfo, board, testFEN);
+
+		var sb = new StringBuilder();
+
+		CUtils.AppendBoardASCII(sb, board, true);
+
+		sb.AppendLine();
+		sb.AppendLine($"960 rooks: {gmInfo.QueensideRook.ColumnChar()}, {gmInfo.KingsideRook.ColumnChar()}");
+
+		Console.WriteLine(sb.ToString());
+
+		string doneFEN = FEN.ToFEN(gmInfo, board);
+		Console.WriteLine($"\"{doneFEN}\"");
+	}
+	private static void Test4()
+	{
+		var gmInfo = Chess960.Create(Col.CA, Col.CH);
+		var board = new Board();
+
+		// Valid:
+		string testFEN = "rb2kn1r/p3p1p1/1p2bpq1/2P4p/4pP1P/2P2N1R/PPBQP1P1/R2K2B1 w A - 1 13";
+
+		FEN.Parse(gmInfo, board, testFEN);
+
+		var sb = new StringBuilder();
+
+		CUtils.AppendBoardASCII(sb, board, true);
+
+		sb.AppendLine();
+		sb.AppendLine($"960 rooks: {gmInfo.QueensideRook.ColumnChar()}, {gmInfo.KingsideRook.ColumnChar()}");
+
+		Console.WriteLine(sb.ToString());
+
+		string doneFEN = FEN.ToFEN(gmInfo, board);
 		Console.WriteLine($"\"{doneFEN}\"");
 	}
 }

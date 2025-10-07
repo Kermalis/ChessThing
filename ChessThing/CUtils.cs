@@ -6,16 +6,16 @@ namespace Kermalis.ChessThing;
 public static class CUtils
 {
 	/// <summary><see cref="PieceKind.None"/> is not handled here.</summary>
-	public static char PieceChar(this PieceKind p, bool capital)
+	public static char PieceChar(this PieceKind p, bool uppercase)
 	{
 		switch (p)
 		{
-			case PieceKind.Pawn: return capital ? 'P' : 'p';
-			case PieceKind.Knight: return capital ? 'N' : 'n';
-			case PieceKind.Bishop: return capital ? 'B' : 'b';
-			case PieceKind.Rook: return capital ? 'R' : 'r';
-			case PieceKind.Queen: return capital ? 'Q' : 'q';
-			case PieceKind.King: return capital ? 'K' : 'k';
+			case PieceKind.Pawn: return uppercase ? 'P' : 'p';
+			case PieceKind.Knight: return uppercase ? 'N' : 'n';
+			case PieceKind.Bishop: return uppercase ? 'B' : 'b';
+			case PieceKind.Rook: return uppercase ? 'R' : 'r';
+			case PieceKind.Queen: return uppercase ? 'Q' : 'q';
+			case PieceKind.King: return uppercase ? 'K' : 'k';
 		}
 
 		throw new ArgumentOutOfRangeException(nameof(p), p, null);
@@ -96,8 +96,12 @@ public static class CUtils
 	{
 		return (char)((int)row + '1');
 	}
-	public static char ColumnChar(this Col col)
+	public static char ColumnChar(this Col col, bool uppercase = false)
 	{
+		if (uppercase)
+		{
+			return (char)((int)col + 'A');
+		}
 		return (char)((int)col + 'a');
 	}
 

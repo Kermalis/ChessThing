@@ -6,7 +6,7 @@
 		<OutputType>Library</OutputType>
 		<RootNamespace>Kermalis.ChessThing</RootNamespace>
 		<Nullable>enable</Nullable>
-		<NoWarn>IDE0290</NoWarn>
+		<NoWarn>IDE0290;IDE0130</NoWarn>
 
 		<Authors>Kermalis</Authors>
 		<Copyright>Kermalis</Copyright>
