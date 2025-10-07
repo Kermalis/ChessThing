@@ -130,6 +130,73 @@ public readonly struct Move
 		}
 	}
 
+	public static Move CreatePawnPromotion(Col? fromColHint, Row? fromRowHint, Square to, PieceKind promotedPiece, bool captureHint, bool checkHint, bool checkmateHint)
+	{
+		if (fromColHint is not null && fromColHint.Value >= Col.MAX)
+		{
+			throw new ArgumentOutOfRangeException(nameof(fromColHint), fromColHint, null);
+		}
+		if (fromRowHint is not null && fromRowHint.Value >= Row.MAX)
+		{
+			throw new ArgumentOutOfRangeException(nameof(fromRowHint), fromRowHint, null);
+		}
+		if (to.Col >= Col.MAX || to.Row >= Row.MAX)
+		{
+			throw new ArgumentOutOfRangeException(nameof(to), to, null);
+		}
+		if (promotedPiece is PieceKind.None or PieceKind.Pawn or PieceKind.King or >= PieceKind.MAX)
+		{
+			throw new ArgumentOutOfRangeException(nameof(promotedPiece), promotedPiece, null);
+		}
+
+		return new Move(PieceKind.Pawn, fromColHint, fromRowHint, to,
+			captureHint, checkHint || checkmateHint, checkmateHint, promote: promotedPiece);
+	}
+	public static Move CreateCastle(Col? fromColHint, Row? fromRowHint, Square? toHint, bool isKingside, bool checkHint, bool checkmateHint)
+	{
+		if (fromColHint is not null && fromColHint.Value >= Col.MAX)
+		{
+			throw new ArgumentOutOfRangeException(nameof(fromColHint), fromColHint, null);
+		}
+		if (fromRowHint is not null && fromRowHint.Value >= Row.MAX)
+		{
+			throw new ArgumentOutOfRangeException(nameof(fromRowHint), fromRowHint, null);
+		}
+		if (toHint is not null)
+		{
+			Square to = toHint.Value;
+			if (to.Col >= Col.MAX || to.Row >= Row.MAX)
+			{
+				throw new ArgumentOutOfRangeException(nameof(toHint), toHint, null);
+			}
+		}
+
+		return new Move(PieceKind.King, fromColHint, fromRowHint, toHint,
+			false, checkHint || checkmateHint, checkmateHint, castleQueenside: !isKingside, castleKingside: isKingside);
+	}
+	public static Move CreateOrdinary(PieceKind piece, Col? fromColHint, Row? fromRowHint, Square to, bool captureHint, bool checkHint, bool checkmateHint)
+	{
+		if (piece is PieceKind.None or >= PieceKind.MAX)
+		{
+			throw new ArgumentOutOfRangeException(nameof(piece), piece, null);
+		}
+		if (fromColHint is not null && fromColHint.Value >= Col.MAX)
+		{
+			throw new ArgumentOutOfRangeException(nameof(fromColHint), fromColHint, null);
+		}
+		if (fromRowHint is not null && fromRowHint.Value >= Row.MAX)
+		{
+			throw new ArgumentOutOfRangeException(nameof(fromRowHint), fromRowHint, null);
+		}
+		if (to.Col >= Col.MAX || to.Row >= Row.MAX)
+		{
+			throw new ArgumentOutOfRangeException(nameof(to), to, null);
+		}
+
+		return new Move(piece, fromColHint, fromRowHint, to,
+			captureHint, checkHint || checkmateHint, checkmateHint);
+	}
+
 	/// <summary>This does not validate the legality of the move.
 	/// So "a3=Q", "Kd1#", or "hxc6" will be parsed even though they're impossible in regular chess.</summary>
 	public static Move ParseAlgebraicNotation(ref ReadOnlySpan<char> chars)
