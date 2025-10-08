@@ -201,7 +201,8 @@ public static class FEN
 		sb.Append($"{fullMoves:D}");
 	}
 
-	/// <summary>If <paramref name="gmInfo"/> is <see cref="Chess960"/>, special handling occurs.
+	/// <summary><paramref name="chars"/> must not have any whitespace at the end.
+	/// If <paramref name="gmInfo"/> is <see cref="Chess960"/>, special handling occurs.
 	/// If <see cref="Chess960.IsInitialized"/> is <see langword="false"/>, we will treat this FEN as the initial setup with white to move.
 	/// This means we will initialize the <paramref name="gmInfo"/> using the castling notation, require white to move, require both sides full castling ability, require halfmoves == 0, and require fullmoves == 1.
 	/// If it is already initialized, we will validate the castling notation in 960 style (using column letters).</summary>

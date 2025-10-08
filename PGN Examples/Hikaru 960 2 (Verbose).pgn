@@ -1,0 +1,52 @@
+[Event "Live Chess - Chess960"]
+[Site "Chess.com"]
+[Date "2025.04.09"]
+[Round "?"]
+[White "NikoTheodorou"]
+[Black "Hikaru"]
+[Result "0-1"]
+[Variant "Chess960"]
+[SetUp "1"]
+[FEN "rbqknnbr/pppppppp/8/8/8/8/PPPPPPPP/RBQKNNBR w HAha - 0 1"]
+[TimeControl "180+2"]
+[WhiteElo "2703"]
+[BlackElo "2863"]
+[Termination "Hikaru won by resignation"]
+[EndTime "9:47:20 GMT+0000"]
+[initialSetup "rbqknnbr/pppppppp/8/8/8/8/PPPPPPPP/RBQKNNBR w HAha - 0 1"]
+[Link "https://www.chess.com/game/live/138505243899?username=hikaru&move=0"]
+
+1. f4 {[%clk 0:03:02][%timestamp 1]} 1... d5 {[%clk 0:03:02][%timestamp 1]} 2.
+Nf3 {[%clk 0:02:55.8][%timestamp 82]} 2... c5 {[%clk 0:03:01.7][%timestamp 23]}
+3. d3 {[%clk 0:02:53.6][%timestamp 42]} 3... Nd6 {[%clk 0:03:00][%timestamp 37]}
+4. Ng3 {[%clk 0:02:49.7][%timestamp 59]} 4... h5 {[%clk 0:02:56.7][%timestamp
+53]} 5. h4 {[%clk 0:02:04.8][%timestamp 469]} 5... b6 {[%clk
+0:02:56.3][%timestamp 24]} 6. c3 {[%clk 0:02:05.6][%timestamp 12]} 6... Qg4
+{[%clk 0:02:49.3][%timestamp 90]} 7. Rh3 {[%clk 0:01:32.3][%timestamp 353]} 7...
+f6 {[%clk 0:02:44.7][%timestamp 66]} 8. Bc2 {[%clk 0:01:16.9][%timestamp 174]}
+8... Be6 {[%clk 0:02:14.7][%timestamp 320]} 9. Qd2 {[%clk 0:01:13.4][%timestamp
+55]} 9... Qg6 {[%clk 0:02:13.9][%timestamp 28]} 10. d4 {[%clk
+0:01:09.4][%timestamp 60]} 10... Ne4 {[%clk 0:02:06.5][%timestamp 94]} 11. Nxe4
+{[%clk 0:01:07.4][%timestamp 40]} 11... dxe4 {[%clk 0:02:07.9][%timestamp 6]}
+12. dxc5+ {[%clk 0:01:08.1][%timestamp 13]} 12... Ke8 {[%clk
+0:02:09.5][%timestamp 4]} 13. O-O-O {[%clk 0:01:00.5][%timestamp 96]} 13... Bc7
+{[%clk 0:02:00.9][%timestamp 106]} 14. Qe3 {[%clk 0:00:35][%timestamp 275]}
+14... Bxh3 {[%clk 0:00:59.2][%timestamp 637]} 15. Bxe4 {[%clk
+0:00:20.2][%timestamp 168]} 15... Qh6 {[%clk 0:01:00.6][%timestamp 6]} 16. Ng5
+{[%clk 0:00:06.9][%timestamp 153]} 16... fxg5 {[%clk 0:00:58.2][%timestamp 44]}
+17. fxg5 {[%clk 0:00:06.3][%timestamp 26]} 17... Qe6 {[%clk
+0:00:59.2][%timestamp 10]} 18. gxh3 {[%clk 0:00:05.2][%timestamp 31]} 18... Rd8
+{[%clk 0:00:58.5][%timestamp 27]} 19. Qf3 {[%clk 0:00:03.5][%timestamp 37]}
+19... Rxd1+ {[%clk 0:00:58.8][%timestamp 17]} 20. Kxd1 {[%clk
+0:00:05.4][%timestamp 1]} 20... bxc5 {[%clk 0:00:28.5][%timestamp 323]} 21. Bf5
+{[%clk 0:00:04.8][%timestamp 26]} 21... Qd6+ {[%clk 0:00:27.8][%timestamp 27]}
+22. Kc2 {[%clk 0:00:06.2][%timestamp 6]} 22... g6 {[%clk 0:00:18.2][%timestamp
+116]} 23. Be4 {[%clk 0:00:07][%timestamp 12]} 23... Nd7 {[%clk
+0:00:19.2][%timestamp 10]} 24. Bc6 {[%clk 0:00:06.1][%timestamp 29]} 24... Rf8
+{[%clk 0:00:20.5][%timestamp 7]} 25. Qg2 {[%clk 0:00:04.4][%timestamp 37]} 25...
+Kd8 {[%clk 0:00:20.4][%timestamp 21]} 26. Bb5 {[%clk 0:00:05.7][%timestamp 7]}
+26... Nb6 {[%clk 0:00:21.5][%timestamp 9]} 27. Qb7 {[%clk 0:00:05.7][%timestamp
+20]} 27... Rf1 {[%clk 0:00:22][%timestamp 15]} 28. Bd3 {[%clk
+0:00:02.6][%timestamp 51][%c_effect
+d8;square;d8;type;Winner;animated;true;keyPressed;undefined;persistent;true,c2;square;c2;type;ResignWhite;animated;true;keyPressed;undefined;persistent;true]}
+0-1

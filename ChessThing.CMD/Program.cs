@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Text;
 
 namespace Kermalis.ChessThing.CMD;
@@ -7,7 +8,7 @@ internal static class Program
 {
 	private static void Main()
 	{
-		int which = 4;
+		int which = 5;
 
 		switch (which)
 		{
@@ -16,6 +17,7 @@ internal static class Program
 			case 2: Test2(); break;
 			case 3: Test3(); break;
 			case 4: Test4(); break;
+			case 5: Test5(); break;
 		}
 
 		Console.ReadKey();
@@ -127,5 +129,15 @@ internal static class Program
 
 		string doneFEN = FEN.ToFEN(gmInfo, board);
 		Console.WriteLine($"\"{doneFEN}\"");
+	}
+	private static void Test5()
+	{
+		//string pgnTextStr = File.ReadAllText("../../../../PGN Examples/Hikaru Bot 1.pgn");
+		string pgnTextStr = File.ReadAllText("../../../../PGN Examples/Kermalis London 2 (Verbose).pgn");
+
+		ReadOnlySpan<char> pgnText = pgnTextStr;
+		pgnText = pgnText.TrimEnd();
+		var pgn = PGN.Parse(pgnText);
+		;
 	}
 }

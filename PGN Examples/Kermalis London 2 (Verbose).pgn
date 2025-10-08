@@ -1,0 +1,48 @@
+[Event "Live Chess"]
+[Site "Chess.com"]
+[Date "2025.10.08"]
+[Round "-"]
+[White "Kermalis"]
+[Black "Dutch_PawnKing"]
+[Result "1-0"]
+[CurrentPosition "rn3rk1/pbp2ppQ/1p1qp1B1/8/3P4/4P1P1/PPP2PP1/R3K3 b Q - 3 17"]
+[Timezone "UTC"]
+[ECO "D00"]
+[ECOUrl "https://www.chess.com/openings/Queens-Pawn-Opening-Accelerated-London-System-2...e6-3.e3"]
+[UTCDate "2025.10.08"]
+[UTCTime "05:10:51"]
+[WhiteElo "748"]
+[BlackElo "728"]
+[TimeControl "180"]
+[Termination "Kermalis won by checkmate"]
+[StartTime "05:10:51"]
+[EndDate "2025.10.08"]
+[EndTime "05:12:12"]
+[Link "https://www.chess.com/analysis/game/live/144035245764/analysis?move=0"]
+[WhiteUrl "https://images.chesscomfiles.com/uploads/v1/user/98067206.3d1ed52a.50x50o.7ae911e45b9a.jpg"]
+[WhiteCountry "101"]
+[WhiteTitle ""]
+[BlackUrl "https://images.chesscomfiles.com/uploads/v1/user/8326446.f7eff18c.50x50o.84b3437a1449.jpg"]
+[BlackCountry "17"]
+[BlackTitle ""]
+
+1. d4 {[%clk 0:02:59.9]} 1... d5 {[%clk 0:02:58]} 2. Bf4 {[%clk 0:02:59]} 2...
+e6 {[%clk 0:02:53.2]} 3. e3 {[%clk 0:02:58.5]} 3... Nf6 {[%clk 0:02:50.9]} 4.
+Nd2 {[%clk 0:02:56.8]} 4... Bd6 {[%clk 0:02:45.4]} 5. Bg3 {[%clk 0:02:55.5]}
+5... Bxg3 {[%clk 0:02:42.4]} 6. hxg3 {[%clk 0:02:55.4]} 6... O-O {[%clk
+0:02:40.6]} 7. Ngf3 {[%clk 0:02:54.5]} 7... Ne4 $6 {[%clk 0:02:34.4][%c_effect
+e4;square;e4;type;Inaccuracy;persistent;true]} 8. Nxe4 {[%clk 0:02:53.1]} 8...
+dxe4 {[%clk 0:02:31.1]} 9. Nd2 {[%clk 0:02:51.6]} 9... b6 {[%clk 0:02:23.3]} 10.
+Nxe4 {[%clk 0:02:49.9]} 10... Bb7 {[%clk 0:02:21.4]} 11. Bd3 {[%clk 0:02:48.2]}
+11... Qe7 $4 {[%clk 0:02:14][%c_effect
+e7;square;e7;type;Blunder;persistent;true]} 12. Nd6 $9 {[%clk 0:02:43.5]} 12...
+Qxd6 $4 {[%clk 0:02:11.3][%c_effect d6;square;d6;type;Blunder;persistent;true]}
+13. Bxh7+ $1 {[%clk 0:02:42.4][%c_effect
+h7;square;h7;type;GreatFind;persistent;true]} 13... Kh8 {[%clk 0:02:08.7]} 14.
+Bg6+ {[%clk 0:02:42.3]} 14... Kg8 {[%clk 0:02:07.3]} 15. Rh8+ $3 {[%clk
+0:02:42.2][%c_effect h8;square;h8;type;Brilliant;persistent;true]} 15... Kxh8
+{[%clk 0:02:05.5]} 16. Qh5+ $1 {[%clk 0:02:42.1][%c_effect
+h5;square;h5;type;GreatFind;persistent;true]} 16... Kg8 {[%clk 0:02:03.7]} 17.
+Qh7# {[%clk 0:02:42][%c_effect
+e1;square;e1;type;Winner;animated;true,g8;square;g8;type;CheckmateBlack;animated;true]}
+1-0

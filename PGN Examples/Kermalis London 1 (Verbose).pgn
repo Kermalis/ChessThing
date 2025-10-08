@@ -1,0 +1,43 @@
+[Event "Live Chess"]
+[Site "Chess.com"]
+[Date "2025.09.27"]
+[Round "-"]
+[White "Kermalis"]
+[Black "mehmetnofear"]
+[Result "1-0"]
+[CurrentPosition "r1bq1rk1/pppn1ppQ/4p1B1/3pP3/8/2P1P1P1/PP1N1PP1/R3K3 b Q - 3 17"]
+[Timezone "UTC"]
+[ECO "D00"]
+[ECOUrl "https://www.chess.com/openings/Queens-Pawn-Opening-Accelerated-London-System-2...e6-3.e3"]
+[UTCDate "2025.09.27"]
+[UTCTime "04:29:54"]
+[WhiteElo "888"]
+[BlackElo "884"]
+[TimeControl "600"]
+[Termination "Kermalis won by checkmate"]
+[StartTime "04:29:54"]
+[EndDate "2025.09.27"]
+[EndTime "04:32:33"]
+[Link "https://www.chess.com/analysis/game/live/143608225578/analysis?move=0"]
+[WhiteUrl "https://images.chesscomfiles.com/uploads/v1/user/98067206.3d1ed52a.50x50o.7ae911e45b9a.jpg"]
+[WhiteCountry "101"]
+[WhiteTitle ""]
+[BlackUrl "https://www.chess.com/bundles/web/images/noavatar_l.84a92436.gif"]
+[BlackCountry ""]
+[BlackTitle ""]
+
+1. d4 {[%clk 0:09:59.9]} 1... d5 {[%clk 0:09:58.5]} 2. Bf4 {[%clk 0:09:58.8]}
+2... e6 {[%clk 0:09:55.2]} 3. e3 {[%clk 0:09:56.5]} 3... Nd7 {[%clk 0:09:48.3]}
+4. Bd3 {[%clk 0:09:54.9]} 4... Ndf6 {[%clk 0:09:46.4]} 5. Nd2 {[%clk 0:09:50.1]}
+5... Ne7 {[%clk 0:09:43.7]} 6. Ngf3 {[%clk 0:09:47.4]} 6... Ng6 {[%clk 0:09:42]}
+7. Bg3 {[%clk 0:09:37.6]} 7... Be7 {[%clk 0:09:38.2]} 8. Ne5 {[%clk 0:09:32.6]}
+8... Nxe5 {[%clk 0:09:35.8]} 9. dxe5 {[%clk 0:09:32.5]} 9... Nd7 {[%clk
+0:09:31.6]} 10. c3 {[%clk 0:08:57.6]} 10... Bh4 {[%clk 0:09:27]} 11. Qg4 {[%clk
+0:08:43.7]} 11... Bxg3 {[%clk 0:09:22.4]} 12. hxg3 {[%clk 0:08:41.9]} 12... O-O
+{[%clk 0:09:17.1]} 13. Bxh7+ {[%clk 0:08:34.4]} 13... Kh8 {[%clk 0:09:10.7]} 14.
+Bg6+ {[%clk 0:08:33.1]} 14... Kg8 {[%clk 0:09:08.4]} 15. Rh8+ $3 {[%clk
+0:08:25.6][%c_effect h8;square;h8;type;Brilliant;persistent;true]} 15... Kxh8
+{[%clk 0:09:04.7]} 16. Qh5+ {[%clk 0:08:23.6]} 16... Kg8 {[%clk 0:09:03.5]} 17.
+Qh7# {[%clk 0:08:23.5][%c_effect
+e1;square;e1;type;Winner;animated;true,g8;square;g8;type;CheckmateBlack;animated;true]}
+1-0

@@ -31,4 +31,9 @@ public readonly struct Square
 
 		return new Square(col, row);
 	}
+
+	public override string ToString()
+	{
+		return $"{Col.ColumnChar()}{Row.RowChar()}";
+	}
 }
