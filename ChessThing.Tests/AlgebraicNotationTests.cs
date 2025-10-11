@@ -73,6 +73,8 @@ public sealed class AlgebraicNotationTests
 	[InlineData("Bxc8+", 5, null, null, Col.CC, Row.R8, PieceKind.Bishop, true, true, false)]
 	[InlineData("Qxa7#", 5, null, null, Col.CA, Row.R7, PieceKind.Queen, true, true, true)]
 	[InlineData("Kxd1", 4, null, null, Col.CD, Row.R1, PieceKind.King, true, false, false)]
+	// These are semi-rare since they appear when multiple of the same piece spy the same square.
+	// Typically Knights and Rooks.
 	[InlineData("Nfd2", 4, Col.CF, null, Col.CD, Row.R2, PieceKind.Knight, false, false, false)]
 	[InlineData("Nfd2+", 5, Col.CF, null, Col.CD, Row.R2, PieceKind.Knight, false, true, false)]
 	[InlineData("Nfd2#", 5, Col.CF, null, Col.CD, Row.R2, PieceKind.Knight, false, true, true)]
@@ -85,6 +87,14 @@ public sealed class AlgebraicNotationTests
 	[InlineData("N3xd2", 5, null, Row.R3, Col.CD, Row.R2, PieceKind.Knight, true, false, false)]
 	[InlineData("N3xd2+", 6, null, Row.R3, Col.CD, Row.R2, PieceKind.Knight, true, true, false)]
 	[InlineData("N3xd2#", 6, null, Row.R3, Col.CD, Row.R2, PieceKind.Knight, true, true, true)]
+	// These are extremely rare since they appear when promoting Pawns to "something" and 3 or more of that "something" spy the same square.
+	// Typically Knights and Queens, but Bishops can do it if they're on the same color.
+	[InlineData("Nf3d2", 5, Col.CF, Row.R3, Col.CD, Row.R2, PieceKind.Knight, false, false, false)]
+	[InlineData("Nf3d2+", 6, Col.CF, Row.R3, Col.CD, Row.R2, PieceKind.Knight, false, true, false)]
+	[InlineData("Nf3d2#", 6, Col.CF, Row.R3, Col.CD, Row.R2, PieceKind.Knight, false, true, true)]
+	[InlineData("Nf3xd2", 6, Col.CF, Row.R3, Col.CD, Row.R2, PieceKind.Knight, true, false, false)]
+	[InlineData("Nf3xd2+", 7, Col.CF, Row.R3, Col.CD, Row.R2, PieceKind.Knight, true, true, false)]
+	[InlineData("Nf3xd2#", 7, Col.CF, Row.R3, Col.CD, Row.R2, PieceKind.Knight, true, true, true)]
 	public void OtherPieceMove(string str, int numChars, Col? fromCol, Row? fromRow, Col toCol, Row toRow, PieceKind piece, bool capture, bool check, bool checkmate)
 	{
 		ReadOnlySpan<char> chars = str;

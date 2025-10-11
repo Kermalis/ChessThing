@@ -198,7 +198,7 @@ public readonly struct Move
 	}
 
 	/// <summary>This does not validate the legality of the move.
-	/// So "a3=Q", "Kd1#", or "hxc6" will be parsed even though they're impossible in regular chess.</summary>
+	/// So "b8", "a3=Q", "Kd1#", or "hxc6" will be parsed even though they're impossible in regular chess.</summary>
 	public static Move ParseAlgebraicNotation(ref ReadOnlySpan<char> chars)
 	{
 		bool checkHint;
@@ -322,6 +322,70 @@ public readonly struct Move
 
 					return new Move(PieceKind.Pawn, null, null, new Square(toCol, toRow),
 						false, checkHint, checkmateHint);
+				}
+			}
+		}
+
+		// Parse stuff like "Nf3xd2" "Nf3xd2+" "Nf3xd2#"
+		if (chars.Length >= 6 && chars[3] == 'x')
+		{
+			PieceKind p = TryParseNonPawnPiece(chars[0]);
+			if (p < PieceKind.MAX)
+			{
+				Col fromCol = CUtils.TryParseCol(chars[1]);
+				if (fromCol < Col.MAX)
+				{
+					Row fromRow = CUtils.TryParseRow(chars[2]);
+					if (fromRow < Row.MAX)
+					{
+						Col toCol = CUtils.TryParseCol(chars[4]);
+						if (toCol < Col.MAX)
+						{
+							Row toRow = CUtils.TryParseRow(chars[5]);
+							if (toRow < Row.MAX)
+							{
+								if (!TryParseCheckHints(ref chars, 6, out checkHint, out checkmateHint))
+								{
+									chars = chars.Slice(6);
+								}
+
+								return new Move(p, fromCol, fromRow, new Square(toCol, toRow),
+									true, checkHint, checkmateHint);
+							}
+						}
+					}
+				}
+			}
+		}
+
+		// Parse stuff like "Nf3d2" "Nf3d2+" "Nf3d2#"
+		if (chars.Length >= 5)
+		{
+			PieceKind p = TryParseNonPawnPiece(chars[0]);
+			if (p < PieceKind.MAX)
+			{
+				Col fromCol = CUtils.TryParseCol(chars[1]);
+				if (fromCol < Col.MAX)
+				{
+					Row fromRow = CUtils.TryParseRow(chars[2]);
+					if (fromRow < Row.MAX)
+					{
+						Col toCol = CUtils.TryParseCol(chars[3]);
+						if (toCol < Col.MAX)
+						{
+							Row toRow = CUtils.TryParseRow(chars[4]);
+							if (toRow < Row.MAX)
+							{
+								if (!TryParseCheckHints(ref chars, 5, out checkHint, out checkmateHint))
+								{
+									chars = chars.Slice(5);
+								}
+
+								return new Move(p, fromCol, fromRow, new Square(toCol, toRow),
+									false, checkHint, checkmateHint);
+							}
+						}
+					}
 				}
 			}
 		}

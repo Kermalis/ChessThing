@@ -18,6 +18,8 @@ namespace Kermalis.ChessThing;
 /// Full move counter is verified to be >= 1.</summary>
 public static class FEN
 {
+	public const string DEFAULT = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w QKqk - 0 1";
+
 	private const int MAX_HALFMOVES = 100; // We can share a board state once the 50 move draw occurs
 	private const int FEN_MAX_LEN = 96;
 
