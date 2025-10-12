@@ -4,10 +4,14 @@ namespace Kermalis.ChessThing;
 
 public readonly struct Square
 {
+	public static readonly Square Invalid = new(Col.MAX, Row.MAX);
+
 	public readonly Col Col;
 	public readonly Row Row;
 
 	public int Index => CUtils.SquareIndex(Col, Row);
+
+	public bool IsInvalid => Col >= Col.MAX || Row >= Row.MAX;
 
 	public Square(Col col, Row row)
 	{
@@ -34,6 +38,10 @@ public readonly struct Square
 
 	public override string ToString()
 	{
+		if (IsInvalid)
+		{
+			return "Invalid";
+		}
 		return $"{Col.ColumnChar()}{Row.RowChar()}";
 	}
 }

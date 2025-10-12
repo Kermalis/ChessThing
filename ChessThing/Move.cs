@@ -25,7 +25,8 @@ public readonly struct Move
 
 	public readonly PieceKind Piece => (PieceKind)(_data & 0b111);
 
-	public readonly Col? FromColHint
+	/// <summary>Returns <see cref="Col.MAX"/> if there is no hint.</summary>
+	public readonly Col FromColHint
 	{
 		get
 		{
@@ -33,10 +34,11 @@ public readonly struct Move
 			{
 				return (Col)((_data >> 4) & 0b111);
 			}
-			return null;
+			return Col.MAX;
 		}
 	}
-	public readonly Row? FromRowHint
+	/// <summary>Returns <see cref="Row.MAX"/> if there is no hint.</summary>
+	public readonly Row FromRowHint
 	{
 		get
 		{
@@ -44,11 +46,12 @@ public readonly struct Move
 			{
 				return (Row)((_data >> 8) & 0b111);
 			}
-			return null;
+			return Row.MAX;
 		}
 	}
-	/// <summary>Castling notation infers the "to" square.</summary>
-	public readonly Square? ToHint
+	/// <summary>Returns <see cref="Square.Invalid"/> if there is no hint.
+	/// Castling notation infers the "to" square.</summary>
+	public readonly Square ToHint
 	{
 		get
 		{
@@ -58,7 +61,7 @@ public readonly struct Move
 				var row = (Row)((_data >> 15) & 0b111);
 				return new Square(col, row);
 			}
-			return null;
+			return Square.Invalid;
 		}
 	}
 
@@ -81,27 +84,26 @@ public readonly struct Move
 	public readonly bool CheckHint => (_data & (1u << 24)) != 0;
 	public readonly bool CheckmateHint => (_data & (1u << 25)) != 0;
 
-	private Move(PieceKind p, Col? fromColHint, Row? fromRowHint, Square? toHint,
+	private Move(PieceKind p, Col fromColHint, Row fromRowHint, Square toHint,
 		bool captureHint, bool checkHint, bool checkmateHint, PieceKind promote = PieceKind.None, bool castleQueenside = false, bool castleKingside = false)
 	{
 		_data |= (uint)p;
 
-		if (fromColHint is not null)
+		if (fromColHint != Col.MAX)
 		{
 			_data |= 1u << 3;
-			_data |= (uint)fromColHint.Value << 4;
+			_data |= (uint)fromColHint << 4;
 		}
-		if (fromRowHint is not null)
+		if (fromRowHint != Row.MAX)
 		{
 			_data |= 1u << 7;
-			_data |= (uint)fromRowHint.Value << 8;
+			_data |= (uint)fromRowHint << 8;
 		}
-		if (toHint is not null)
+		if (!toHint.IsInvalid)
 		{
-			Square to = toHint.Value;
 			_data |= 1u << 11;
-			_data |= (uint)to.Col << 12;
-			_data |= (uint)to.Row << 15;
+			_data |= (uint)toHint.Col << 12;
+			_data |= (uint)toHint.Row << 15;
 		}
 
 		if (promote != PieceKind.None)
@@ -130,17 +132,18 @@ public readonly struct Move
 		}
 	}
 
-	public static Move CreatePawnPromotion(Col? fromColHint, Row? fromRowHint, Square to, PieceKind promotedPiece, bool captureHint, bool checkHint, bool checkmateHint)
+	/// <summary><paramref name="fromColHint"/> and <paramref name="fromRowHint"/> should be <see cref="Col.MAX"/> and <see cref="Row.MAX"/> for a lack of hint.</summary>
+	public static Move CreatePawnPromotion(Col fromColHint, Row fromRowHint, Square to, PieceKind promotedPiece, bool captureHint, bool checkHint, bool checkmateHint)
 	{
-		if (fromColHint is not null && fromColHint.Value >= Col.MAX)
+		if (fromColHint > Col.MAX)
 		{
 			throw new ArgumentOutOfRangeException(nameof(fromColHint), fromColHint, null);
 		}
-		if (fromRowHint is not null && fromRowHint.Value >= Row.MAX)
+		if (fromRowHint > Row.MAX)
 		{
 			throw new ArgumentOutOfRangeException(nameof(fromRowHint), fromRowHint, null);
 		}
-		if (to.Col >= Col.MAX || to.Row >= Row.MAX)
+		if (to.IsInvalid)
 		{
 			throw new ArgumentOutOfRangeException(nameof(to), to, null);
 		}
@@ -152,43 +155,37 @@ public readonly struct Move
 		return new Move(PieceKind.Pawn, fromColHint, fromRowHint, to,
 			captureHint, checkHint || checkmateHint, checkmateHint, promote: promotedPiece);
 	}
-	public static Move CreateCastle(Col? fromColHint, Row? fromRowHint, Square? toHint, bool isKingside, bool checkHint, bool checkmateHint)
+	/// <summary><paramref name="fromColHint"/> and <paramref name="fromRowHint"/> and <paramref name="toHint"/> should be <see cref="Col.MAX"/> and <see cref="Row.MAX"/> and <see cref="Square.Invalid"/> for a lack of hint.</summary>
+	public static Move CreateCastle(Col fromColHint, Row fromRowHint, Square toHint, bool isKingside, bool checkHint, bool checkmateHint)
 	{
-		if (fromColHint is not null && fromColHint.Value >= Col.MAX)
+		if (fromColHint > Col.MAX)
 		{
 			throw new ArgumentOutOfRangeException(nameof(fromColHint), fromColHint, null);
 		}
-		if (fromRowHint is not null && fromRowHint.Value >= Row.MAX)
+		if (fromRowHint > Row.MAX)
 		{
 			throw new ArgumentOutOfRangeException(nameof(fromRowHint), fromRowHint, null);
-		}
-		if (toHint is not null)
-		{
-			Square to = toHint.Value;
-			if (to.Col >= Col.MAX || to.Row >= Row.MAX)
-			{
-				throw new ArgumentOutOfRangeException(nameof(toHint), toHint, null);
-			}
 		}
 
 		return new Move(PieceKind.King, fromColHint, fromRowHint, toHint,
 			false, checkHint || checkmateHint, checkmateHint, castleQueenside: !isKingside, castleKingside: isKingside);
 	}
-	public static Move CreateOrdinary(PieceKind piece, Col? fromColHint, Row? fromRowHint, Square to, bool captureHint, bool checkHint, bool checkmateHint)
+	/// <summary><paramref name="fromColHint"/> and <paramref name="fromRowHint"/> should be <see cref="Col.MAX"/> and <see cref="Row.MAX"/> for a lack of hint.</summary>
+	public static Move CreateOrdinary(PieceKind piece, Col fromColHint, Row fromRowHint, Square to, bool captureHint, bool checkHint, bool checkmateHint)
 	{
 		if (piece is PieceKind.None or >= PieceKind.MAX)
 		{
 			throw new ArgumentOutOfRangeException(nameof(piece), piece, null);
 		}
-		if (fromColHint is not null && fromColHint.Value >= Col.MAX)
+		if (fromColHint > Col.MAX)
 		{
 			throw new ArgumentOutOfRangeException(nameof(fromColHint), fromColHint, null);
 		}
-		if (fromRowHint is not null && fromRowHint.Value >= Row.MAX)
+		if (fromRowHint > Row.MAX)
 		{
 			throw new ArgumentOutOfRangeException(nameof(fromRowHint), fromRowHint, null);
 		}
-		if (to.Col >= Col.MAX || to.Row >= Row.MAX)
+		if (to.IsInvalid)
 		{
 			throw new ArgumentOutOfRangeException(nameof(to), to, null);
 		}
@@ -212,7 +209,7 @@ public readonly struct Move
 				chars = chars.Slice(5);
 			}
 
-			return new Move(PieceKind.King, null, null, null,
+			return new Move(PieceKind.King, Col.MAX, Row.MAX, Square.Invalid,
 				false, checkHint, checkmateHint, castleQueenside: true);
 		}
 
@@ -224,7 +221,7 @@ public readonly struct Move
 				chars = chars.Slice(3);
 			}
 
-			return new Move(PieceKind.King, null, null, null,
+			return new Move(PieceKind.King, Col.MAX, Row.MAX, Square.Invalid,
 				false, checkHint, checkmateHint, castleKingside: true);
 		}
 
@@ -249,7 +246,7 @@ public readonly struct Move
 								chars = chars.Slice(6);
 							}
 
-							return new Move(PieceKind.Pawn, fromCol, null, new Square(toCol, toRow),
+							return new Move(PieceKind.Pawn, fromCol, Row.MAX, new Square(toCol, toRow),
 								true, checkHint, checkmateHint, promote: pp);
 						}
 					}
@@ -275,7 +272,7 @@ public readonly struct Move
 							chars = chars.Slice(4);
 						}
 
-						return new Move(PieceKind.Pawn, null, null, new Square(toCol, toRow),
+						return new Move(PieceKind.Pawn, Col.MAX, Row.MAX, new Square(toCol, toRow),
 							false, checkHint, checkmateHint, promote: pp);
 					}
 				}
@@ -299,7 +296,7 @@ public readonly struct Move
 							chars = chars.Slice(4);
 						}
 
-						return new Move(PieceKind.Pawn, fromCol, null, new Square(toCol, toRow),
+						return new Move(PieceKind.Pawn, fromCol, Row.MAX, new Square(toCol, toRow),
 							true, checkHint, checkmateHint);
 					}
 				}
@@ -320,7 +317,7 @@ public readonly struct Move
 						chars = chars.Slice(2);
 					}
 
-					return new Move(PieceKind.Pawn, null, null, new Square(toCol, toRow),
+					return new Move(PieceKind.Pawn, Col.MAX, Row.MAX, new Square(toCol, toRow),
 						false, checkHint, checkmateHint);
 				}
 			}
@@ -411,7 +408,7 @@ public readonly struct Move
 								chars = chars.Slice(5);
 							}
 
-							return new Move(p, fromCol, null, new Square(toCol, toRow),
+							return new Move(p, fromCol, Row.MAX, new Square(toCol, toRow),
 								true, checkHint, checkmateHint);
 						}
 					}
@@ -432,7 +429,7 @@ public readonly struct Move
 									chars = chars.Slice(5);
 								}
 
-								return new Move(p, null, fromRow, new Square(toCol, toRow),
+								return new Move(p, Col.MAX, fromRow, new Square(toCol, toRow),
 									true, checkHint, checkmateHint);
 							}
 						}
@@ -458,7 +455,7 @@ public readonly struct Move
 							chars = chars.Slice(4);
 						}
 
-						return new Move(p, null, null, new Square(toCol, toRow),
+						return new Move(p, Col.MAX, Row.MAX, new Square(toCol, toRow),
 							true, checkHint, checkmateHint);
 					}
 				}
@@ -486,7 +483,7 @@ public readonly struct Move
 								chars = chars.Slice(4);
 							}
 
-							return new Move(p, fromCol, null, new Square(toCol, toRow),
+							return new Move(p, fromCol, Row.MAX, new Square(toCol, toRow),
 								false, checkHint, checkmateHint);
 						}
 					}
@@ -507,7 +504,7 @@ public readonly struct Move
 									chars = chars.Slice(4);
 								}
 
-								return new Move(p, null, fromRow, new Square(toCol, toRow),
+								return new Move(p, Col.MAX, fromRow, new Square(toCol, toRow),
 									false, checkHint, checkmateHint);
 							}
 						}
@@ -533,7 +530,7 @@ public readonly struct Move
 							chars = chars.Slice(3);
 						}
 
-						return new Move(p, null, null, new Square(toCol, toRow),
+						return new Move(p, Col.MAX, Row.MAX, new Square(toCol, toRow),
 							false, checkHint, checkmateHint);
 					}
 				}
